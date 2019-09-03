@@ -1,0 +1,4 @@
+
+SET FOREIGN_KEY_CHECKS = 0;
+ALTER TABLE `song_suggestion` ADD COLUMN `url` varchar(256) NULL AFTER `suggester`;
+SET FOREIGN_KEY_CHECKS = 1;

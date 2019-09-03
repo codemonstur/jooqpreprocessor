@@ -1,0 +1,4 @@
+
+SET FOREIGN_KEY_CHECKS = 0;
+ALTER TABLE `wedding` ADD COLUMN `invitation` varchar(32) NULL AFTER `template`;
+SET FOREIGN_KEY_CHECKS = 1;
