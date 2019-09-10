@@ -7,7 +7,7 @@
     <packaging>maven-plugin</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
-    <description>An preprocessor for SQL files to allow for parsing with JOOQ parser</description>
+    <description>A preprocessor for SQL files to allow for parsing with JOOQ parser</description>
     <url>https://github.com/codemonstur/jooqpreprocessor</url>
 
     <licenses>
