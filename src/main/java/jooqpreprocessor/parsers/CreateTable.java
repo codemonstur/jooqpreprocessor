@@ -9,7 +9,7 @@ public final class CreateTable implements StatementParser {
 
     @Override
     public boolean matches(final String statement) {
-        return statement.trim().startsWith("CREATE TABLE ");
+        return statement.startsWith("CREATE TABLE ");
     }
 
     @Override
@@ -22,15 +22,21 @@ public final class CreateTable implements StatementParser {
             .stream(statement.substring(startIndex+1, endIndex).split(","))
             .iterator();
         while (middlePart.hasNext()) {
-            final String part = middlePart.next().trim();
+            String part = middlePart.next().trim();
             if (part.startsWith("KEY ") || part.startsWith("CONSTRAINT ")) continue;
+            if (part.endsWith(" bit(1) NOT NULL DEFAULT b'0'")) {
+                part = part.replaceAll("DEFAULT b'0'", "DEFAULT 0");
+            }
+            if (part.endsWith(" bit(1) NOT NULL DEFAULT b'1'")) {
+                part = part.replaceAll("DEFAULT b'1'", "DEFAULT 1");
+            }
             middle.add(part);
         }
 
         return statement.substring(0, startIndex)
             + "("
             + String.join(",", middle)
-            + ")";
+            + ");\n";
     }
 
 }

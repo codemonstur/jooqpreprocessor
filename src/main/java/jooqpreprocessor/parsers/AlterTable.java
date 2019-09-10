@@ -9,32 +9,40 @@ public final class AlterTable implements StatementParser {
 
     @Override
     public boolean matches(final String statement) {
-        return statement.trim().startsWith("ALTER TABLE `");
+        return statement.startsWith("ALTER TABLE `");
     }
 
     @Override
     public String convert(final String statement) {
-        final int startIndex = statement.trim().indexOf('`', 13);
-        final String alterStart = statement.trim().substring(0, startIndex+1);
+        final int startIndex = statement.indexOf('`', 13);
+        final String alterStart = statement.substring(0, startIndex+1);
 
         final List<String> alters = new LinkedList<>();
         final Iterator<String> clauses = Arrays
             .stream(statement.trim().substring(startIndex+2).split(","))
             .iterator();
         while (clauses.hasNext()) {
-            final String clause = clauses.next().trim();
+            String clause = clauses.next().trim();
+            if (clause.isEmpty()) continue;
             if (clause.startsWith("ADD INDEX ")) continue;
             if (clause.startsWith("ADD CONSTRAINT ")) continue;
+            if (clause.equals("DROP PRIMARY KEY")) {
+                alters.add(0, alterStart + " " + clause.trim() + ";");
+                continue;
+            }
+            clause = clause.replaceAll("(AUTO_INCREMENT|auto_increment)", "");
+            clause = clause.replaceAll("(FIRST|first)", "");
+            clause = clause.replaceAll("(USING BTREE|using btree)", "");
+            int afterIndex = clause.indexOf(" AFTER ");
+            if (afterIndex != -1) {
+                int endfieldIndex = clause.indexOf('`', afterIndex+8);
+                clause = clause.substring(0, afterIndex) + " " + clause.substring(endfieldIndex+1);
+            }
 
-            alters.add(alterStart + " " + clause + ";");
+            alters.add(alterStart + " " + clause.trim() + ";");
         }
 
-        return String.join("\n", alters)+"\n";
+        return alters.isEmpty() ? "" : String.join("\n", alters)+"\n";
     }
-
-    // ALTER TABLE `invitation`
-    // ADD COLUMN `wedding_id` int(10) unsigned NOT NULL AFTER `invitation_id`,
-    // ADD INDEX `fk_invitation_wedding_idx` (`wedding_id`) USING BTREE,
-    // ADD CONSTRAINT `fk_invitation_wedding` FOREIGN KEY `fk_invitation_wedding` (`wedding_id`) REFERENCES `wedding` (`wedding_id`) ON DELETE CASCADE ON UPDATE CASCADE
 
 }

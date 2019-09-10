@@ -1,10 +1,11 @@
 package jooqpreprocessor;
 
 import jooqpreprocessor.parsers.*;
+import org.apache.log4j.Level;
+import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
-import org.apache.maven.project.MavenProject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,19 +13,22 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.nio.file.StandardOpenOption.WRITE;
+import static java.util.Comparator.comparingInt;
+import static java.util.stream.Collectors.joining;
 import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_RESOURCES;
 
 @Mojo( defaultPhase = GENERATE_RESOURCES, name = "generate" )
-public final class MavenGenerateJooqSql extends LogSuppressingMojo {
-
-    @Parameter(defaultValue = "${project}", readonly = true)
-    public MavenProject project;
+public final class MavenGenerateJooqSql extends AbstractMojo {
+    static {
+        org.apache.log4j.LogManager.getRootLogger().setLevel(Level.OFF);
+    }
 
     @Parameter(defaultValue = "true")
     public boolean enabled;
@@ -34,6 +38,9 @@ public final class MavenGenerateJooqSql extends LogSuppressingMojo {
 
     @Parameter(defaultValue = "target/generated-resources/db/fulldb.sql")
     public String generationSqlFile;
+
+    private static final List<StatementParser> parsers = List.of(new ForeignKeyChecks()
+            , new NameUTF8(), new CreateTable(), new AlterTable());
 
     public void execute() throws MojoFailureException {
         if (!enabled) return;
@@ -45,21 +52,27 @@ public final class MavenGenerateJooqSql extends LogSuppressingMojo {
         }
     }
 
-
     private void processSQL() throws IOException {
         final Path outputFile = toPath(generationSqlFile);
 
-        final StringBuilder result = new StringBuilder();
+        final String result = Arrays
+            .stream(listFiles(migrationSqlDir)
+            .filter(File::exists)
+            .sorted(comparingInt(o -> toNumber(o.getName())))
+            .flatMap(MavenGenerateJooqSql::readAllLines)
+            .map(String::trim)
+            .filter(s -> !s.isEmpty())
+            .filter(s -> !s.startsWith("--"))
+            .map(s -> s+" ")
+            .collect(joining())
+            .split(";"))
+            .filter(Objects::nonNull)
+            .filter(s -> !s.isBlank())
+            .map(String::trim)
+            .map(MavenGenerateJooqSql::toJooqSafeStatement)
+            .collect(joining());
 
-        final File[] sqlFiles = sortFiles(listFiles(migrationSqlDir));
-        for (final File file : sqlFiles) {
-            final Iterator<String> statements = toSqlStatementIterator(file);
-            while (statements.hasNext()) {
-                result.append(toJooqSafeStatement(statements.next()));
-            }
-        }
-
-        Files.writeString(outputFile, result.toString(), UTF_8, CREATE, WRITE);
+        Files.writeString(outputFile, result, UTF_8, CREATE, WRITE);
     }
 
     private static Path toPath(final String filename) throws IOException {
@@ -70,32 +83,43 @@ public final class MavenGenerateJooqSql extends LogSuppressingMojo {
         return file.toPath();
     }
 
-    private static File[] listFiles(final String dirname) throws FileNotFoundException {
+    private static Stream<File> listFiles(final String dirname) throws FileNotFoundException {
         if (dirname == null || dirname.isEmpty()) throw new FileNotFoundException("Specified Migration SQL directory is empty");
         final File dir = new File(dirname);
         if (!dir.exists()) throw new FileNotFoundException("Specified Migration SQL directory does not exist");
         if (!dir.isDirectory()) throw new FileNotFoundException("Specified Migration SQL directory is not a directory");
-        return dir.listFiles();
+        return Arrays.stream(dir.listFiles());
     }
 
-    private static File[] sortFiles(final File[] files) {
-        // TODO find out of the default order is the correct order
-        return files;
-    }
-
-    private static Iterator<String> toSqlStatementIterator(final File file) throws IOException {
-        final String contents = Files.readString(file.toPath());
-        return Arrays.stream(contents.split(";")).iterator();
-    }
-
-    private static final List<StatementParser> parsers = List.of(new ForeignKeyChecks(), new NameUTF8(), new CreateTable(), new AlterTable());
-
-    private static String toJooqSafeStatement(final String statement) throws IOException {
-        if (statement == null || statement.trim().isEmpty()) return "";
-        for (final StatementParser parser : parsers) {
-            if (!parser.matches(statement)) continue;
-            return parser.convert(statement);
+    private static Stream<String> readAllLines(final File path) {
+        try {
+            return Files.readAllLines(path.toPath()).stream();
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
         }
-        throw new IOException("No parser matched with statement: " + statement);
+    }
+
+    private static int toNumber(final String name) {
+        final int periodIndex = name.indexOf('.');
+        final int underscoreIndex = name.indexOf("__");
+        return
+            ( periodIndex == -1 || underscoreIndex == -1 )
+            ? 0
+            : parseInt(name.substring(periodIndex+1, underscoreIndex), 0);
+    }
+    private static int parseInt(final String value, final int _default) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return _default;
+        }
+    }
+
+    private static String toJooqSafeStatement(final String statement) {
+        for (final StatementParser parser : parsers) {
+            if (parser.matches(statement))
+                return parser.convert(statement);
+        }
+        throw new IllegalArgumentException("No parser matched with statement: " + statement);
     }
 }
