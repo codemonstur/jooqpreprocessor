@@ -26,6 +26,7 @@ public final class AlterTable implements StatementParser {
             if (clause.isEmpty()) continue;
             if (clause.startsWith("ADD INDEX ")) continue;
             if (clause.startsWith("ADD CONSTRAINT ")) continue;
+            if (clause.startsWith("ADD UNIQUE INDEX ")) continue;
             if (clause.equals("DROP PRIMARY KEY")) {
                 alters.add(0, alterStart + " " + clause.trim() + ";");
                 continue;
