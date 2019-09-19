@@ -39,7 +39,7 @@ public final class MavenGenerateJooqSql extends AbstractMojo {
     @Parameter(defaultValue = "target/generated-resources/db/fulldb.sql")
     public String generationSqlFile;
 
-    private static final List<StatementParser> parsers = List.of(new ForeignKeyChecks()
+    private static final List<StatementParser> parsers = Arrays.asList(new ForeignKeyChecks()
             , new NameUTF8(), new CreateTable(), new AlterTable());
 
     public void execute() throws MojoFailureException {
@@ -67,12 +67,12 @@ public final class MavenGenerateJooqSql extends AbstractMojo {
             .collect(joining())
             .split(";"))
             .filter(Objects::nonNull)
-            .filter(s -> !s.isBlank())
+            .filter(s -> !s.trim().isEmpty())
             .map(String::trim)
             .map(MavenGenerateJooqSql::toJooqSafeStatement)
             .collect(joining());
 
-        Files.writeString(outputFile, result, UTF_8, CREATE, WRITE);
+        Files.write(outputFile, result.getBytes(UTF_8), CREATE, WRITE);
     }
 
     private static Path toPath(final String filename) throws IOException {

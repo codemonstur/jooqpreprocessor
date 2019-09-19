@@ -9,7 +9,7 @@ import static org.jooq.meta.jaxb.Logging.FATAL;
 public class TestJooqGenerator {
 
     public static void main(final String... args) throws Exception {
-        generateJooqCode("src/test/resources/set1/V1.11__duplicate-unique-key.sql", "target/generate-sources");
+        generateJooqCode("src/test/resources/set1/V1.12__alter-unique-index.sql", "target/generate-sources");
     }
 
     private static Path generateJooqCode(final String inputScript, final String outputDir) throws Exception {

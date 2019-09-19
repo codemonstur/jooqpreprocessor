@@ -1,6 +1,8 @@
 import com.github.difflib.DiffUtils;
 import com.github.difflib.algorithm.DiffAlgorithmListener;
 import com.github.difflib.algorithm.DiffException;
+import com.github.difflib.patch.AbstractDelta;
+import com.github.difflib.patch.Patch;
 import jooqpreprocessor.MavenGenerateJooqSql;
 import org.jooq.codegen.GenerationTool;
 import org.jooq.meta.jaxb.*;
@@ -9,7 +11,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.jooq.meta.jaxb.Logging.FATAL;
 
 public class TestGeneration {
@@ -86,11 +90,13 @@ public class TestGeneration {
             return;
         }
         try {
-            final var diff = DiffUtils.diff(Files.readString(file1), Files.readString(file2), newNopDiffAlgorithmListener());
-            final var deltas = diff.getDeltas();
+            final Patch<String> diff = DiffUtils.diff(new String(Files.readAllBytes(file1), UTF_8)
+                    , new String(Files.readAllBytes(file2), UTF_8), newNopDiffAlgorithmListener());
+
+            final List<AbstractDelta<String>> deltas = diff.getDeltas();
             if (!deltas.isEmpty()) {
                 System.out.println("=== There are differences between " + file1 + " and " + file2);
-                for (final var delta : deltas) {
+                for (final AbstractDelta<String> delta : deltas) {
                     System.out.println("=== Change of type: " + delta.getType());
                     System.out.println("=== Source is:\n" + delta.getSource().toString());
                     System.out.println("=== Target is:\n" + delta.getTarget().toString());
