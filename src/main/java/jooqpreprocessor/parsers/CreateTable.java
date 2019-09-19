@@ -23,11 +23,11 @@ public final class CreateTable implements StatementParser {
             .iterator();
         while (middlePart.hasNext()) {
             String part = middlePart.next().trim();
-            if (part.startsWith("KEY ") || part.startsWith("CONSTRAINT ")) continue;
-            if (part.endsWith(" bit(1) NOT NULL DEFAULT b'0'")) {
+            if (part.startsWith("KEY ") || part.startsWith("CONSTRAINT ") || part.startsWith("UNIQUE KEY ")) continue;
+            if (part.endsWith(" DEFAULT b'0'")) {
                 part = part.replaceAll("DEFAULT b'0'", "DEFAULT 0");
             }
-            if (part.endsWith(" bit(1) NOT NULL DEFAULT b'1'")) {
+            if (part.endsWith(" DEFAULT b'1'")) {
                 part = part.replaceAll("DEFAULT b'1'", "DEFAULT 1");
             }
             middle.add(part);
