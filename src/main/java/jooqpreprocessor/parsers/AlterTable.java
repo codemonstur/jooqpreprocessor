@@ -31,9 +31,9 @@ public final class AlterTable implements StatementParser {
                 alters.add(0, alterStart + " " + clause.trim() + ";");
                 continue;
             }
-            clause = clause.replaceAll("(AUTO_INCREMENT|auto_increment)", "");
-            clause = clause.replaceAll("(FIRST|first)", "");
-            clause = clause.replaceAll("(USING BTREE|using btree)", "");
+            clause = clause.replaceAll("( AUTO_INCREMENT| auto_increment)", "");
+            clause = clause.replaceAll("( FIRST| first)", "");
+            clause = clause.replaceAll("( USING BTREE| using btree)", "");
             int afterIndex = clause.indexOf(" AFTER ");
             if (afterIndex != -1) {
                 int endfieldIndex = clause.indexOf('`', afterIndex+8);
