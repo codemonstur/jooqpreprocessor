@@ -9,7 +9,7 @@ import static org.jooq.meta.jaxb.Logging.FATAL;
 public class TestJooqGenerator {
 
     public static void main(final String... args) throws Exception {
-        generateJooqCode("src/test/resources/set1/V1.13__modify-column.sql", "target/generate-sources");
+        generateJooqCode("src/test/resources/set1/V1.15__drop-index-on.sql", "target/generate-sources");
     }
 
     private static Path generateJooqCode(final String inputScript, final String outputDir) throws Exception {
