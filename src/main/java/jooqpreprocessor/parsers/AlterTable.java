@@ -34,6 +34,7 @@ public final class AlterTable implements StatementParser {
             clause = clause.replaceAll("( AUTO_INCREMENT| auto_increment)", "");
             clause = clause.replaceAll("( FIRST| first)", "");
             clause = clause.replaceAll("( USING BTREE| using btree)", "");
+            clause = clause.replaceAll(" DEFAULT NULL", "");
             int afterIndex = clause.indexOf(" AFTER ");
             if (afterIndex != -1) {
                 int endfieldIndex = clause.indexOf('`', afterIndex+8);
