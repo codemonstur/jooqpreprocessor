@@ -16,7 +16,6 @@ public final class AlterTable implements StatementParser {
         final String alterStart = statement.substring(0, startIndex+1);
 
         final List<String> alters = new LinkedList<>();
-        // Fix this part
         final Iterator<String> clauses = toClausesList(toClausesOnlySection(statement)).iterator();
         while (clauses.hasNext()) {
             String clause = clauses.next().trim();
