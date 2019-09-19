@@ -1,9 +1,6 @@
 package jooqpreprocessor.parsers;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public final class AlterTable implements StatementParser {
 
@@ -19,9 +16,8 @@ public final class AlterTable implements StatementParser {
         final String alterStart = statement.substring(0, startIndex+1);
 
         final List<String> alters = new LinkedList<>();
-        final Iterator<String> clauses = Arrays
-            .stream(statement.trim().substring(startIndex+2).split(","))
-            .iterator();
+        // Fix this part
+        final Iterator<String> clauses = toClausesList(toClausesOnlySection(statement)).iterator();
         while (clauses.hasNext()) {
             String clause = clauses.next().trim();
             if (clause.isEmpty()) continue;
@@ -55,6 +51,39 @@ public final class AlterTable implements StatementParser {
         }
 
         return alters.isEmpty() ? "" : String.join("\n", alters)+"\n";
+    }
+
+    private static String toClausesOnlySection(final String alterStatement) {
+        // 13 is the offset that starts after "ALTER TABLE `"
+        final int startIndex = alterStatement.indexOf('`', 13);
+        // 2 removes the last ` and the space following it
+        return alterStatement.trim().substring(startIndex+2);
+    }
+
+    private static List<String> toClausesList(final String clauses) {
+        final List<String> ret = new ArrayList<>();
+
+        for (int start = 0, next; start != -1 && start < clauses.length();) {
+            next = findNextSeparator(clauses, start);
+            if (next == -1) {
+                ret.add(clauses.substring(start).trim());
+                start = next;
+            } else {
+                ret.add(clauses.substring(start, next).trim());
+                start = next+1;
+            }
+        }
+
+        return ret;
+    }
+
+    private static int findNextSeparator(final String input, final int offset) {
+        int i = offset;
+        while (i != -1 && i < input.length()) {
+            if (input.charAt(i) == ',') return i;
+            i = input.charAt(i) == '(' ? input.indexOf(')', i) : i+1;
+        }
+        return i;
     }
 
 }
