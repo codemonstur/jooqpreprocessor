@@ -27,6 +27,7 @@ public final class AlterTable implements StatementParser {
             if (clause.startsWith("ADD UNIQUE INDEX ")) continue;
             if (clause.startsWith("DROP INDEX ")) continue;
             if (clause.startsWith("DROP CONSTRAINT ")) continue;
+            if (clause.startsWith("DROP FOREIGN KEY ")) continue;
 
             // Dropping a primary key might be poorly ordered, putting it first fixes the problem
             if (clause.equals("DROP PRIMARY KEY")) {
@@ -39,6 +40,8 @@ public final class AlterTable implements StatementParser {
             clause = clause.replaceAll("( FIRST| first)", "");
             clause = clause.replaceAll("( USING BTREE| using btree)", "");
             clause = clause.replaceAll(" DEFAULT NULL", "");
+            clause = clause.replaceAll(" DEFAULT b'1'", "DEFAULT 1");
+
             int afterIndex = clause.indexOf(" AFTER ");
             if (afterIndex != -1) {
                 int endfieldIndex = clause.indexOf('`', afterIndex+8);
