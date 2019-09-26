@@ -16,9 +16,7 @@ public final class AlterTable implements StatementParser {
         final String alterStart = statement.substring(0, startIndex+1);
 
         final List<String> alters = new LinkedList<>();
-        final Iterator<String> clauses = toClausesList(toClausesOnlySection(statement)).iterator();
-        while (clauses.hasNext()) {
-            String clause = clauses.next().trim();
+        for (String clause : toClausesList(toClausesOnlySection(statement))) {
             if (clause.isEmpty()) continue;
 
             // Removing indexes and constraints, JOOQ does not need to know about these
@@ -44,8 +42,8 @@ public final class AlterTable implements StatementParser {
 
             int afterIndex = clause.indexOf(" AFTER ");
             if (afterIndex != -1) {
-                int endfieldIndex = clause.indexOf('`', afterIndex+8);
-                clause = clause.substring(0, afterIndex) + " " + clause.substring(endfieldIndex+1);
+                int endfieldIndex = clause.indexOf('`', afterIndex + 8);
+                clause = clause.substring(0, afterIndex) + " " + clause.substring(endfieldIndex + 1);
             }
 
             // add whats left of the clause
