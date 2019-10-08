@@ -8,6 +8,6 @@ public final class DropTable implements StatementParser {
 
     @Override
     public String convert(final String statement) {
-        return statement;
+        return statement+";\n";
     }
 }

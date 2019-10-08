@@ -4,6 +4,7 @@ import jooqpreprocessor.parsers.*;
 import org.apache.log4j.Level;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -54,10 +55,11 @@ public final class MavenGenerateJooqSql extends AbstractMojo {
 
     private void processSQL() throws IOException {
         final Path outputFile = toPath(generationSqlFile);
+        Log log = getLog();
 
         final String result = Arrays
             .stream(listFiles(migrationSqlDir)
-            .filter(File::exists)
+            .filter(File::isFile)
             .sorted(comparingInt(o -> toNumber(o.getName())))
             .flatMap(MavenGenerateJooqSql::readAllLines)
             .map(String::trim)
@@ -69,7 +71,7 @@ public final class MavenGenerateJooqSql extends AbstractMojo {
             .filter(Objects::nonNull)
             .filter(s -> !s.trim().isEmpty())
             .map(String::trim)
-            .map(MavenGenerateJooqSql::toJooqSafeStatement)
+            .map(statement -> toJooqSafeStatement(log, statement))
             .collect(joining());
 
         Files.write(outputFile, result.getBytes(UTF_8), CREATE, WRITE);
@@ -115,11 +117,12 @@ public final class MavenGenerateJooqSql extends AbstractMojo {
         }
     }
 
-    private static String toJooqSafeStatement(final String statement) {
+    private static String toJooqSafeStatement(final Log log, final String statement) {
         for (final StatementParser parser : parsers) {
             if (parser.matches(statement))
                 return parser.convert(statement);
         }
-        throw new IllegalArgumentException("No parser matched with statement: " + statement);
+        log.warn("No parser matched with statement: " + statement);
+        return statement;
     }
 }
