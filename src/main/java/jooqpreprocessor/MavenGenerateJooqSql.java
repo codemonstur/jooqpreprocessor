@@ -40,7 +40,7 @@ public final class MavenGenerateJooqSql extends AbstractMojo {
     public String generationSqlFile;
 
     private static final List<StatementParser> parsers = Arrays.asList(new ForeignKeyChecks()
-            , new NameUTF8(), new CreateTable(), new AlterTable());
+            , new NameUTF8(), new CreateTable(), new AlterTable(), new DropTable());
 
     public void execute() throws MojoFailureException {
         if (!enabled) return;
