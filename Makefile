@@ -2,7 +2,7 @@ clean:
 	@mvn -q clean
 
 build:
-	@mvn -q -e clean package #shade:shade@shade
+	@mvn -q -e clean package
 
 check-versions:
 	@mvn versions:display-dependency-updates
