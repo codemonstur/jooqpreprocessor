@@ -37,7 +37,7 @@ public final class MavenGenerateJooqSql extends AbstractMojo {
     @Parameter(defaultValue = "src/main/resources/db/migration")
     public String migrationSqlDir;
 
-    @Parameter(defaultValue = "target/generated-resources/db/fulldb.sql")
+    @Parameter(defaultValue = "target/generated-resources/db/schema.sql")
     public String generationSqlFile;
 
     private static final List<StatementParser> parsers = Arrays.asList(new ForeignKeyChecks()
