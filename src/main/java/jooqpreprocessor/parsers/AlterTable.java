@@ -39,6 +39,7 @@ public final class AlterTable implements StatementParser {
             clause = clause.replaceAll("( USING BTREE| using btree)", "");
             clause = clause.replaceAll(" DEFAULT NULL", "");
             clause = clause.replaceAll(" DEFAULT b'1'", " DEFAULT 1");
+            clause = clause.replaceAll(" COMMENT '[^']+'", "");
 
             int afterIndex = clause.indexOf(" AFTER ");
             if (afterIndex != -1) {
