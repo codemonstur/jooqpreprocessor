@@ -38,6 +38,7 @@ public final class AlterTable implements StatementParser {
             clause = clause.replaceAll("( FIRST| first)", "");
             clause = clause.replaceAll("( USING BTREE| using btree)", "");
             clause = clause.replaceAll(" DEFAULT NULL", "");
+            clause = clause.replaceAll(" DEFAULT b'0'", " DEFAULT 0");
             clause = clause.replaceAll(" DEFAULT b'1'", " DEFAULT 1");
             clause = clause.replaceAll(" COMMENT '[^']+'", "");
 
@@ -61,7 +62,7 @@ public final class AlterTable implements StatementParser {
         return alterStatement.trim().substring(startIndex+2);
     }
 
-    private static List<String> toClausesList(final String clauses) {
+    public static List<String> toClausesList(final String clauses) {
         final List<String> ret = new ArrayList<>();
 
         for (int start = 0, next; start != -1 && start < clauses.length();) {
@@ -82,9 +83,25 @@ public final class AlterTable implements StatementParser {
         int i = offset;
         while (i != -1 && i < input.length()) {
             if (input.charAt(i) == ',') return i;
-            i = input.charAt(i) == '(' ? input.indexOf(')', i) : i+1;
+
+            if (input.charAt(i) == '(')
+                i = unescapedIndexOf(input, ')', i+1) + 1;
+            else if (input.charAt(i) == '`')
+                i = unescapedIndexOf(input, '`', i+1) + 1;
+            else if (input.charAt(i) == '\'')
+                i = unescapedIndexOf(input, '\'',i+1) + 1;
+            else
+                i = i + 1;
         }
         return i;
     }
 
+    private static int unescapedIndexOf(final String input, final char c, final int offset) {
+        int i = offset;
+        while (i != -1 && i < input.length()) {
+            if (input.charAt(i) == c) return i;
+            i = input.charAt(i) == '\\' ? i+2 : i+1;
+        }
+        return i;
+    }
 }
