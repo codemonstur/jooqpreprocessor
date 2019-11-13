@@ -1,0 +1,5 @@
+1.6.0
+
+Added bit column DEFAULT b'0' filter
+Added single quote string parsing
+Added support for escaping in string clauses
