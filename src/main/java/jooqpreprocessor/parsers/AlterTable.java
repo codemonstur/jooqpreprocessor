@@ -37,9 +37,11 @@ public final class AlterTable implements StatementParser {
             clause = clause.replaceAll("( AUTO_INCREMENT| auto_increment)", "");
             clause = clause.replaceAll("( FIRST| first)", "");
             clause = clause.replaceAll("( USING BTREE| using btree)", "");
+            // DEFAULT clauses are supported in ADD COLUMN but not in MODIFY COLUMN
             clause = clause.replaceAll(" DEFAULT NULL", "");
-            clause = clause.replaceAll(" DEFAULT b'0'", " DEFAULT 0");
-            clause = clause.replaceAll(" DEFAULT b'1'", " DEFAULT 1");
+            clause = clause.replaceAll(" DEFAULT 0", "");
+            clause = clause.replaceAll(" DEFAULT b'0'", "");
+            clause = clause.replaceAll(" DEFAULT b'1'", "");
             clause = clause.replaceAll(" COMMENT '[^']+'", "");
 
             int afterIndex = clause.indexOf(" AFTER ");
