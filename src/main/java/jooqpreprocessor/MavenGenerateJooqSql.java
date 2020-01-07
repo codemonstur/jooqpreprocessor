@@ -1,7 +1,6 @@
 package jooqpreprocessor;
 
 import jooqpreprocessor.parsers.*;
-import org.apache.log4j.Level;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.logging.Log;
@@ -27,16 +26,11 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_RESOU
 
 @Mojo( defaultPhase = GENERATE_RESOURCES, name = "generate" )
 public final class MavenGenerateJooqSql extends AbstractMojo {
-    static {
-        org.apache.log4j.LogManager.getRootLogger().setLevel(Level.OFF);
-    }
 
     @Parameter(defaultValue = "true")
     public boolean enabled;
-
     @Parameter(defaultValue = "src/main/resources/db/migration")
     public String migrationSqlDir;
-
     @Parameter(defaultValue = "target/generated-resources/db/schema.sql")
     public String generationSqlFile;
 
