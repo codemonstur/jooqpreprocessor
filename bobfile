@@ -1,3 +1,4 @@
+vendor: com.github.codemonstur
 name: jooq-preprocessor
 version: 1.7.0
 packaging: maven-plugin
