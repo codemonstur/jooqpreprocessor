@@ -1,0 +1,7 @@
+1.8.0
+
+Better parsing for CREATE statements
+- Added removing of 'USING BTREE'
+Disabled preview features
+Updated license
+Removed log4j, removed info logging from build
