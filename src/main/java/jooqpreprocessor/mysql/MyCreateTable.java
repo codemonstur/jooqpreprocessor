@@ -1,4 +1,4 @@
-package jooqpreprocessor.parsers;
+package jooqpreprocessor.mysql;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -6,7 +6,7 @@ import java.util.List;
 
 import static jooqpreprocessor.util.StringParsing.findNextSeparator;
 
-public final class CreateTable implements StatementParser {
+public final class MyCreateTable implements StatementParser {
 
     @Override
     public boolean matches(final String statement) {

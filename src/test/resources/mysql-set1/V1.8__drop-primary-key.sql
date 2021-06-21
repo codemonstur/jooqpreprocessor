@@ -1,3 +1,5 @@
+-- Currently being addressed in https://github.com/jOOQ/jOOQ/issues/8846
+-- and https://github.com/jOOQ/jOOQ/issues/8834
 
 -- This is correct code according to MySQL but it fails in JOOQ
 -- JOOQ doesn't allow multiple clauses in ALTER statements, if you use the standard workaround and turn it into

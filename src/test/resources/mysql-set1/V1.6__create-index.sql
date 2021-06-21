@@ -1,4 +1,5 @@
 -- Currently being addressed in https://github.com/jOOQ/jOOQ/issues/9132
+-- Issue was closed
 -- Workaround:
 --
 -- CREATE TABLE `example` (

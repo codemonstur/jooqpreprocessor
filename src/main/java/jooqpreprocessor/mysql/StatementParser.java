@@ -1,4 +1,4 @@
-package jooqpreprocessor.parsers;
+package jooqpreprocessor.mysql;
 
 public interface StatementParser {
     boolean matches(String statement);

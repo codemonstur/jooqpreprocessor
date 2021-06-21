@@ -1,4 +1,5 @@
 -- Currently being addressed in https://github.com/jOOQ/jOOQ/issues/9131
+-- Issue was closed
 -- Workaround: remove the b and single quotes
 
 CREATE TABLE `example5` (
