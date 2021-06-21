@@ -40,7 +40,7 @@ public class MigrationsProcessor {
 
     private static String removeComments(final String line) {
         final StringBuilder ret = new StringBuilder();
-        int i = 0 ;
+        int i = 0;
         while (i < line.length()) {
             int offset = line.indexOf("/*", i);
             if (offset == -1) {
@@ -50,7 +50,7 @@ public class MigrationsProcessor {
                 ret.append(line, i, offset);
                 int closeOffset = line.indexOf("*/", offset);
                 if (closeOffset == -1) break;
-                i = closeOffset+2;
+                i = closeOffset + 2;
             }
         }
         return ret.toString();
