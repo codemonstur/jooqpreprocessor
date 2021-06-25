@@ -1,4 +1,5 @@
 -- Currently being addressed in https://github.com/jOOQ/jOOQ/issues/7241
+-- Issue was closed
 -- Workaround: remove the FIRST clause
 
 CREATE TABLE `example3` (

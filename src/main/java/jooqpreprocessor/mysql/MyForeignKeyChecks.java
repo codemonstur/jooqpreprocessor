@@ -1,8 +1,8 @@
-package jooqpreprocessor.parsers;
+package jooqpreprocessor.mysql;
 
 import java.util.regex.Pattern;
 
-public final class ForeignKeyChecks implements StatementParser {
+public final class MyForeignKeyChecks implements StatementParser {
 
     private static final Pattern PATTERN = Pattern.compile("(SET|set) FOREIGN_KEY_CHECKS = [01]");
 

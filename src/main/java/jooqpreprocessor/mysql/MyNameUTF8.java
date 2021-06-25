@@ -1,6 +1,6 @@
-package jooqpreprocessor.parsers;
+package jooqpreprocessor.mysql;
 
-public final class NameUTF8 implements StatementParser {
+public final class MyNameUTF8 implements StatementParser {
 
     @Override
     public boolean matches(final String statement) {

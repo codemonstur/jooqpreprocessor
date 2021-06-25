@@ -1,6 +1,6 @@
-package jooqpreprocessor.parsers;
+package jooqpreprocessor.mysql;
 
-public final class DropTable implements StatementParser {
+public final class MyDropTable implements StatementParser {
     @Override
     public boolean matches(final String statement) {
         return statement.startsWith("DROP TABLE `");

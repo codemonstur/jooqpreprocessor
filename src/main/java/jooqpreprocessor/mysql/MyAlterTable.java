@@ -1,10 +1,10 @@
-package jooqpreprocessor.parsers;
+package jooqpreprocessor.mysql;
 
 import java.util.*;
 
 import static jooqpreprocessor.util.StringParsing.findNextSeparator;
 
-public final class AlterTable implements StatementParser {
+public final class MyAlterTable implements StatementParser {
 
     @Override
     public boolean matches(final String statement) {
