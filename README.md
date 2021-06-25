@@ -6,7 +6,9 @@
 
 ## JOOQ preprocessor
 
-Almost functional.
+Have been using this in production for some years now.
+It works great.
+The tool itself is highly opinionated though, it has been tuned to DB schema's that use the features I like. YMMV.
 
 The jOOQ code generator is missing various features that prevents its use in a fully automated way.
 The standard workaround is to maintain two lists of SQL scripts; one for the DB to do the migration and one for the code generator to work on.

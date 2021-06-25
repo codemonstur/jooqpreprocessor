@@ -49,7 +49,7 @@ public final class MavenGenerateJooqSql extends AbstractMojo {
 
     private void processSQL() throws IOException {
         final Path outputFile = toPath(generationSqlFile);
-        Log log = getLog();
+        final Log log = getLog();
 
         final String result = Arrays
             .stream(listFiles(migrationSqlDir)
@@ -63,8 +63,8 @@ public final class MavenGenerateJooqSql extends AbstractMojo {
             .collect(joining())
             .split(";"))
             .filter(Objects::nonNull)
-            .filter(s -> !s.trim().isEmpty())
             .map(String::trim)
+            .filter(s -> !s.isEmpty())
             .map(statement -> toJooqSafeStatement(log, statement))
             .collect(joining());
 
