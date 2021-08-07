@@ -1,4 +1,6 @@
-package jooqpreprocessor.mysql;
+package jooqpreprocessor.db.mysql;
+
+import jooqpreprocessor.db.StatementParser;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

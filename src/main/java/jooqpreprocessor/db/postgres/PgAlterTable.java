@@ -1,6 +1,6 @@
-package jooqpreprocessor.postgres;
+package jooqpreprocessor.db.postgres;
 
-import jooqpreprocessor.mysql.StatementParser;
+import jooqpreprocessor.db.StatementParser;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

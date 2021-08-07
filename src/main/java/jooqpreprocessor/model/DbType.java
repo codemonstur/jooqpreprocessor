@@ -1,10 +1,11 @@
 package jooqpreprocessor.model;
 
-import jooqpreprocessor.mysql.*;
-import jooqpreprocessor.postgres.PgAlterTable;
-import jooqpreprocessor.postgres.PgCreateSchema;
-import jooqpreprocessor.postgres.PgCreateTable;
-import jooqpreprocessor.postgres.PgSet;
+import jooqpreprocessor.db.StatementParser;
+import jooqpreprocessor.db.mysql.*;
+import jooqpreprocessor.db.postgres.PgAlterTable;
+import jooqpreprocessor.db.postgres.PgCreateSchema;
+import jooqpreprocessor.db.postgres.PgCreateTable;
+import jooqpreprocessor.db.postgres.PgSet;
 
 import java.util.Arrays;
 import java.util.List;

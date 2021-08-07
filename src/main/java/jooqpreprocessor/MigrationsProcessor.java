@@ -1,6 +1,6 @@
 package jooqpreprocessor;
 
-import jooqpreprocessor.mysql.StatementParser;
+import jooqpreprocessor.db.StatementParser;
 
 import java.io.File;
 import java.io.FileNotFoundException;

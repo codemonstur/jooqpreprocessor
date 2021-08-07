@@ -1,6 +1,6 @@
-package jooqpreprocessor.postgres;
+package jooqpreprocessor.db.postgres;
 
-import jooqpreprocessor.mysql.StatementParser;
+import jooqpreprocessor.db.StatementParser;
 
 import java.util.HashMap;
 import java.util.Map;

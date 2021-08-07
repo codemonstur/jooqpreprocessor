@@ -1,4 +1,4 @@
-import jooqpreprocessor.mysql.MyAlterTable;
+import jooqpreprocessor.db.mysql.MyAlterTable;
 
 import java.util.List;
 
