@@ -1,6 +1,5 @@
 import com.github.difflib.DiffUtils;
 import com.github.difflib.algorithm.DiffAlgorithmListener;
-import com.github.difflib.algorithm.DiffException;
 import com.github.difflib.patch.AbstractDelta;
 import com.github.difflib.patch.Patch;
 import jooqpreprocessor.MavenGenerateJooqSql;
@@ -103,7 +102,7 @@ public class TestGeneration {
                     System.out.println();
                 }
             }
-        } catch (DiffException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             System.exit(1);
         }
