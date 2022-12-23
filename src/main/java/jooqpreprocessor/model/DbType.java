@@ -18,7 +18,7 @@ public enum DbType {
         switch (this) {
             case mysql: return Arrays.asList( new MyForeignKeyChecks()
                 , new MyNameUTF8(), new MyCreateTable(), new MyAlterTable()
-                , new MyDropTable() );
+                , new MyDropTable(), new MyCreateTable() );
             case postgres: return Arrays.asList( new PgCreateSchema()
                 , new PgCreateTable(), new PgAlterTable(), new PgSet() );
         }
