@@ -6,12 +6,12 @@ version: 2.0.1
 packaging: maven-plugin
 dependencies:
   - repository: org.apache.maven:maven-plugin-api:3.8.6
-  - repository: org.apache.maven.plugin-tools:maven-plugin-annotations:3.6.4
+  - repository: org.apache.maven.plugin-tools:maven-plugin-annotations:3.7.1
     scope: provided
   - repository: org.apache.maven:maven-project:3.0-alpha-2
-  - repository: org.jooq:jooq-codegen:3.17.4
+  - repository: org.jooq:jooq-codegen:3.17.7
     scope: test
-  - repository: org.jooq:jooq-meta-extensions:3.17.4
+  - repository: org.jooq:jooq-meta-extensions:3.17.7
     scope: test
   - repository: io.github.java-diff-utils:java-diff-utils:4.12
     scope: test
