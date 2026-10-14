@@ -1,6 +1,6 @@
 
 [![GitHub Release](https://img.shields.io/github/release/codemonstur/jooqpreprocessor.svg)](https://github.com/codemonstur/jooqpreprocessor/releases) 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.codemonstur/jooqpreprocessor/badge.svg)](http://mvnrepository.com/artifact/com.github.codemonstur/jooqpreprocessor)
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.codemonstur/jooq-preprocessor.svg)](https://central.sonatype.com/artifact/com.github.codemonstur/jooq-preprocessor)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
 
 # JOOQ preprocessor
