@@ -2,7 +2,9 @@ package jooqpreprocessor.db.mysql;
 
 import jooqpreprocessor.db.StatementParser;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import static jooqpreprocessor.util.StringParsing.findNextSeparator;
 
@@ -17,6 +19,7 @@ public final class MyAlterTable implements StatementParser {
     public String convert(final String statement) {
         // Remove the ALTER TABLE part
         final int startIndex = statement.indexOf('`', 13);
+        if (startIndex == -1) return statement + ";\n";
         final String alterStart = statement.substring(0, startIndex+1);
 
         final List<String> alters = new LinkedList<>();
@@ -44,6 +47,8 @@ public final class MyAlterTable implements StatementParser {
             // DEFAULT clauses are supported in ADD COLUMN but not in MODIFY COLUMN
             clause = clause.replaceAll(" DEFAULT NULL", "");
             clause = clause.replaceAll(" DEFAULT 0", "");
+            clause = clause.replaceAll(" DEFAULT '[^']*'", "");
+            clause = clause.replaceAll(" DEFAULT \"[^\"]*\"", "");
             clause = clause.replaceAll(" DEFAULT b'0'", "");
             clause = clause.replaceAll(" DEFAULT b'1'", "");
             clause = clause.replaceAll(" COMMENT '[^']+'", "");
@@ -51,7 +56,8 @@ public final class MyAlterTable implements StatementParser {
             int afterIndex = clause.indexOf(" AFTER ");
             if (afterIndex != -1) {
                 int endfieldIndex = clause.indexOf('`', afterIndex + 8);
-                clause = clause.substring(0, afterIndex) + " " + clause.substring(endfieldIndex + 1);
+                if (endfieldIndex != -1)
+                    clause = clause.substring(0, afterIndex) + " " + clause.substring(endfieldIndex + 1);
             }
 
             // add whats left of the clause
@@ -62,10 +68,13 @@ public final class MyAlterTable implements StatementParser {
     }
 
     private static String toClausesOnlySection(final String alterStatement) {
+        final String statement = alterStatement.trim();
         // 13 is the offset that starts after "ALTER TABLE `"
-        final int startIndex = alterStatement.indexOf('`', 13);
+        final int startIndex = statement.indexOf('`', 13);
+        if (startIndex == -1) return "";
         // 2 removes the last ` and the space following it
-        return alterStatement.trim().substring(startIndex+2);
+        final int clausesStart = startIndex + 2;
+        return clausesStart > statement.length() ? "" : statement.substring(clausesStart);
     }
 
     public static List<String> toClausesList(final String clauses) {

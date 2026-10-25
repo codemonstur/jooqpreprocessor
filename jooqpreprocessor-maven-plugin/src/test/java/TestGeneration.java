@@ -2,7 +2,7 @@ import com.github.difflib.DiffUtils;
 import com.github.difflib.algorithm.DiffAlgorithmListener;
 import com.github.difflib.patch.AbstractDelta;
 import com.github.difflib.patch.Patch;
-import jooqpreprocessor.MavenGenerateJooqSql;
+import jooqpreprocessor.maven.MavenGenerateJooqSql;
 import org.jooq.codegen.GenerationTool;
 import org.jooq.meta.jaxb.*;
 

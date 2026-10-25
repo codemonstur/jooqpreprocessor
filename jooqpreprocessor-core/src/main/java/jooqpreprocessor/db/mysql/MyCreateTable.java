@@ -2,9 +2,7 @@ package jooqpreprocessor.db.mysql;
 
 import jooqpreprocessor.db.StatementParser;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static jooqpreprocessor.util.StringParsing.findNextSeparator;
 
@@ -18,6 +16,7 @@ public final class MyCreateTable implements StatementParser {
     @Override
     public String convert(final String statement) {
         final int startIndex = statement.indexOf('(');
+        if (startIndex == -1) return statement + ";\n";
 
         final List<String> middle = new LinkedList<>();
         for (String clause : toClausesList(toClausesOnlySection(statement))) {
@@ -29,6 +28,8 @@ public final class MyCreateTable implements StatementParser {
             clause = clause.replaceAll(" USING BTREE", "");
             clause = clause.replaceAll(" DEFAULT NULL", "");
             clause = clause.replaceAll(" DEFAULT 0", "");
+            clause = clause.replaceAll(" DEFAULT '[^']*'", "");
+            clause = clause.replaceAll(" DEFAULT \"[^\"]*\"", "");
             clause = clause.replaceAll(" DEFAULT b'0'", "");
             clause = clause.replaceAll(" DEFAULT b'1'", "");
             clause = clause.replaceAll(" COMMENT '[^']+'", "");
@@ -45,6 +46,7 @@ public final class MyCreateTable implements StatementParser {
     private static String toClausesOnlySection(final String createStatement) {
         final int startIndex = createStatement.indexOf('(');
         final int endIndex = createStatement.lastIndexOf(')');
+        if (startIndex == -1 || endIndex <= startIndex) return "";
         return createStatement.substring(startIndex+1, endIndex);
     }
 
@@ -64,4 +66,5 @@ public final class MyCreateTable implements StatementParser {
 
         return ret;
     }
+
 }
