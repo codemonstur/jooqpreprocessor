@@ -1,0 +1,13 @@
+include https://raw.githubusercontent.com/codemonstur/bobfiles/master/foss-lib-github-maven
+
+vendor: com.github.codemonstur
+name: jooqpreprocessor-cli
+version: 3.0.0
+release: 17
+packaging: jar
+enablePreview: false
+dependencies:
+  - repository: com.github.codemonstur:jooqpreprocessor-core:${project.version}
+  - repository: com.github.codemonstur:jcli:2.0.0
+  - repository: org.jooq:jooq-codegen:3.21.9
+  - repository: org.jooq:jooq-meta-extensions:3.21.9
