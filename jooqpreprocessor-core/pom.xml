@@ -8,10 +8,8 @@
     </parent>
 
     <artifactId>jooqpreprocessor-core</artifactId>
-
     <name>${project.groupId}:${project.artifactId}</name>
     <description>The SQL preprocessing engine and the jOOQ code generator every front-end shares.</description>
-
     <dependencies>
 
         <!-- Optional: only the command line tool and the bob plugin generate jOOQ code, so the

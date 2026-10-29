@@ -8,10 +8,8 @@
     </parent>
 
     <artifactId>jooqpreprocessor-bobplugin</artifactId>
-
     <name>${project.groupId}:${project.artifactId}</name>
     <description>The bob plugin: a jooq-codegen command that preprocesses the migrations and generates the code.</description>
-
     <dependencies>
 
         <dependency>

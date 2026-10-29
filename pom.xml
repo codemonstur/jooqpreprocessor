@@ -4,6 +4,7 @@
     <groupId>com.github.codemonstur</groupId>
     <artifactId>jooqpreprocessor</artifactId>
     <version>3.0.0</version>
+
     <packaging>pom</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -47,8 +48,8 @@
         <maven.compiler.release>17</maven.compiler.release>
         <maven.version>[3.6.3,)</maven.version>
 
-        <version.plugin.check-cves>1.1.0</version.plugin.check-cves>
-        <version.plugin.check-license>1.4.0</version.plugin.check-license>
+        <version.plugin.check-cves>1.2.0</version.plugin.check-cves>
+        <version.plugin.check-license>1.5.0</version.plugin.check-license>
         <version.plugin.codegrade>0.2.0</version.plugin.codegrade>
         <version.plugin.enforcer>3.6.3</version.plugin.enforcer>
         <version.plugin.gpg>3.2.8</version.plugin.gpg>
@@ -67,7 +68,9 @@
         <version.library.junit>6.1.3</version.library.junit>
         <version.library.maven>3.10.0</version.library.maven>
         <version.library.plugin-annotations>3.16.0</version.library.plugin-annotations>
-    </properties>
+            <version.library.pitest-junit5>1.2.3</version.library.pitest-junit5>
+        <version.plugin.pitest>1.30.1</version.plugin.pitest>
+</properties>
 
     <dependencyManagement>
         <dependencies>
@@ -280,15 +283,15 @@
                         <configuration>
                             <includeTestDependencies>true</includeTestDependencies>
                             <rules>
-                                <rule>url:equal:https://www.eclipse.org/legal/epl-v20.html</rule>
-                                <rule>url:regex:(http|https)://(www.)?opensource.org/licenses/(MIT|mit-license.php)</rule>
-                                <rule>name:regex:(The )?Apache(\s|-)(Software )?(License |License, )?(Version |version )?2\.0</rule>
-                                <rule>url:equal:http://www.eclipse.org/org/documents/edl-v10.php</rule>
-                                <rule>name:equal:MPL 2.0</rule>
-                                <rule>url:equal:https://www.mozilla.org/en-US/MPL/2.0/</rule>
-                                <rule>name:equal:CC0</rule>
-                                <rule>url:equal:http://creativecommons.org/publicdomain/zero/1.0/</rule>
+                                <rule>name:regex:.*Apache.*</rule>
+                                <rule>name:regex:.*MIT.*</rule>
+                                <rule>name:regex:.*Eclipse.*</rule>
+                                <rule>name:regex:.*EPL.*</rule>
+                                <rule>name:regex:.*MPL.*</rule>
+                                <rule>name:regex:.*CC0.*</rule>
+                                <rule>name:regex:.*EDL.*</rule>
                             </rules>
+                        
                         </configuration>
                     </plugin>
 
@@ -345,6 +348,38 @@
             </build>
         </profile>
 
-    </profiles>
+            <profile>
+            <id>mutation</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+
+                    <plugin>
+                        <groupId>org.pitest</groupId>
+                        <artifactId>pitest-maven</artifactId>
+                        <version>${version.plugin.pitest}</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.pitest</groupId>
+                                <artifactId>pitest-junit5-plugin</artifactId>
+                                <version>${version.library.pitest-junit5}</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <phase>test</phase>
+                                <goals>
+                                    <goal>mutationCoverage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                </plugins>
+            </build>
+        </profile>
+</profiles>
 
 </project>

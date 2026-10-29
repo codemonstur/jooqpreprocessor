@@ -8,10 +8,8 @@
     </parent>
 
     <artifactId>jooqpreprocessor-cli</artifactId>
-
     <name>${project.groupId}:${project.artifactId}</name>
     <description>The command line tool: preprocesses the migration scripts and generates the jOOQ code.</description>
-
     <dependencies>
 
         <dependency>
