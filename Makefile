@@ -28,8 +28,8 @@ test: ## Runs the tests
 coverage: ## Run tests and generate a jacoco coverage report
 	@$(INFO) "Running tests and generating coverage report"
 	@mvn -Dstyle.color=always org.jacoco:jacoco-maven-plugin:0.8.15:prepare-agent test org.jacoco:jacoco-maven-plugin:0.8.15:report
-	@$(INFO) "Coverage report written to jooqpreprocessor-core/target/site/jacoco/index.html"
-	@output=$$(java src/build/CoverageSummary.java jooqpreprocessor-core/target/site/jacoco/jacoco.csv) || exit $$?; \
+	@$(INFO) "Coverage report written to core/target/site/jacoco/index.html"
+	@output=$$(java src/build/CoverageSummary.java core/target/site/jacoco/jacoco.csv) || exit $$?; \
 	printf '%s\n' "$$output" | while IFS= read -r line; do $(INFO) "$$line"; done
 
 mutation: ## Run mutation tests on the unit tests
@@ -59,8 +59,8 @@ deploy: ## Clean, build and deploy a version to Github and Maven Central
 	@mvn clean deploy
 	@$(INFO) "Creating github release"
 	@gh release create $(NAME)-$(VERSION) \
-		jooqpreprocessor-cli/target/jooqpreprocessor-cli-$(VERSION).jar \
-		jooqpreprocessor-bobplugin/target/jooqpreprocessor-bobplugin.jar \
+		cli/target/jooqpreprocessor-cli-$(VERSION).jar \
+		bobplugin/target/jooqpreprocessor-bobplugin.jar \
 		-F src/docs/releases/release-$(VERSION).txt
 	@$(INFO) "Tagging and pushing to github"
 	@git tag $(NAME)-$(VERSION)

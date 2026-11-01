@@ -35,10 +35,9 @@
     </developers>
 
     <modules>
-        <module>jooqpreprocessor-core</module>
-        <module>jooqpreprocessor-maven-plugin</module>
-        <module>jooqpreprocessor-bobplugin</module>
-        <module>jooqpreprocessor-cli</module>
+        <module>core</module>
+        <module>maven-plugin</module>
+        <module>cli</module>
     </modules>
 
     <properties>
@@ -401,6 +400,17 @@
                 </plugins>
             </build>
         </profile>
+    <profile>
+        <id>bobplugin</id>
+        <activation>
+            <property>
+                <name>!env.SKIP_BOBPLUGIN</name>
+            </property>
+        </activation>
+        <modules>
+            <module>bobplugin</module>
+        </modules>
+    </profile>
 </profiles>
 
 </project>
