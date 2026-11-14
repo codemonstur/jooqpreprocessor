@@ -1,12 +1,6 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
 
-    <properties>            <maven.compiler.release>17</maven.compiler.release>
-            <!-- default for @{argLine}; jacoco's prepare-agent appends the agent when it runs -->
-        <argLine></argLine>
-            <version.plugin.jacoco>0.8.15</version.plugin.jacoco>
-    </properties>
-
     <parent>
         <groupId>com.github.codemonstur</groupId>
         <artifactId>jooqpreprocessor</artifactId>
@@ -16,6 +10,12 @@
     <artifactId>jooqpreprocessor-core</artifactId>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>The SQL preprocessing engine and the jOOQ code generator every front-end shares.</description>
+    <properties>            <maven.compiler.release>17</maven.compiler.release>
+            <!-- default for @{argLine}; jacoco's prepare-agent appends the agent when it runs -->
+        <argLine></argLine>
+            <version.plugin.jacoco>0.8.16</version.plugin.jacoco>
+    </properties>
+
     <dependencies>
 
         <!-- Optional: only the command line tool and the bob plugin generate jOOQ code, so the
