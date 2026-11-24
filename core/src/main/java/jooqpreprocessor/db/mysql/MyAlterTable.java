@@ -8,7 +8,17 @@ import java.util.List;
 
 import static jooqpreprocessor.util.StringParsing.findNextSeparator;
 
+/**
+ * Splits a MySQL {@code ALTER TABLE} statement into separate statements and removes the
+ * clauses that jOOQ cannot parse.
+ */
 public final class MyAlterTable implements StatementParser {
+
+    /**
+     * Creates the parser.
+     */
+    public MyAlterTable() {
+    }
 
     @Override
     public boolean matches(final String statement) {
@@ -77,6 +87,13 @@ public final class MyAlterTable implements StatementParser {
         return clausesStart > statement.length() ? "" : statement.substring(clausesStart);
     }
 
+    /**
+     * Splits a comma-separated clause list into its trimmed clauses, skipping commas that
+     * are nested inside brackets, backticks or quotes.
+     *
+     * @param clauses the clause list to split
+     * @return the individual clauses, in their original order
+     */
     public static List<String> toClausesList(final String clauses) {
         final List<String> ret = new ArrayList<>();
 

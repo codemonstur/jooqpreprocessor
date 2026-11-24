@@ -8,7 +8,17 @@ import java.util.List;
 
 import static jooqpreprocessor.util.StringParsing.findNextSeparator;
 
+/**
+ * Splits a PostgreSQL {@code ALTER TABLE} statement into separate statements and removes the
+ * clauses and casts that jOOQ cannot parse.
+ */
 public final class PgAlterTable implements StatementParser {
+
+    /**
+     * Creates the parser.
+     */
+    public PgAlterTable() {
+    }
 
     @Override
     public boolean matches(final String statement) {
@@ -44,6 +54,13 @@ public final class PgAlterTable implements StatementParser {
         return alterStatement.substring(startIndex+1);
     }
 
+    /**
+     * Splits a comma-separated clause list into its trimmed clauses, skipping commas that
+     * are nested inside brackets, backticks or quotes.
+     *
+     * @param clauses the clause list to split
+     * @return the individual clauses, in their original order
+     */
     public static List<String> toClausesList(final String clauses) {
         final List<String> ret = new ArrayList<>();
 

@@ -5,7 +5,17 @@ import jooqpreprocessor.db.StatementParser;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Passes PostgreSQL {@code SET} statements through, dropping an assignment that repeats the
+ * value already in effect.
+ */
 public class PgSet implements StatementParser {
+
+    /**
+     * Creates the parser.
+     */
+    public PgSet() {
+    }
 
     @Override
     public boolean matches(final String statement) {

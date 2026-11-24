@@ -15,6 +15,12 @@ import static jcli.CliParserBuilder.newCliParser;
 public final class Main {
 
     /**
+     * Prevents instantiation: this class is only an entry point.
+     */
+    private Main() {
+    }
+
+    /**
      * Parses the command line, preprocesses the migration scripts and generates the jOOQ
      * sources. Any failure prints a single line to stderr and exits with status 1.
      *

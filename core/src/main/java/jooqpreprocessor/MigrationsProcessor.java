@@ -16,7 +16,16 @@ import java.util.stream.Stream;
 import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.joining;
 
-public class MigrationsProcessor {
+/**
+ * Turns a directory of SQL migration scripts into a single jOOQ-parsable script.
+ */
+public final class MigrationsProcessor {
+
+    /**
+     * Prevents instantiation: every operation is a static method.
+     */
+    private MigrationsProcessor() {
+    }
 
     /**
      * Reads every migration script in the given directory, in migration order, strips the

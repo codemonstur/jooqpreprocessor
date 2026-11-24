@@ -24,6 +24,12 @@ import static org.apache.maven.plugins.annotations.LifecyclePhase.GENERATE_RESOU
 @Mojo( defaultPhase = GENERATE_RESOURCES, name = "generate" )
 public final class MavenGenerateJooqSql extends AbstractMojo {
 
+    /**
+     * Creates the goal; Maven fills the parameters and then calls {@link #execute()}.
+     */
+    public MavenGenerateJooqSql() {
+    }
+
     /** Whether this goal runs at all. */
     @Parameter(defaultValue = "true")
     public boolean enabled;

@@ -15,6 +15,12 @@ import org.jooq.meta.jaxb.Logging;
     "Preprocesses SQL migration scripts into jOOQ-parsable SQL and generates jOOQ code.")
 public final class CodegenArguments {
 
+    /**
+     * Creates an argument holder with the defaults declared on its fields.
+     */
+    public CodegenArguments() {
+    }
+
     /** Default location of the migration scripts, relative to the project root. */
     public static final String DEFAULT_INPUT_LOCATION = "src/main/resources/db/migration";
 

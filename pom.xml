@@ -196,7 +196,6 @@
                     <artifactId>maven-javadoc-plugin</artifactId>
                     <version>${version.plugin.javadoc}</version>
                     <configuration>
-                        <doclint>none</doclint>
                         <quiet>true</quiet>
                     </configuration>
                     <executions>

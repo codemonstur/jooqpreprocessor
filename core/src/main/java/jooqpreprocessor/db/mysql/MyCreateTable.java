@@ -6,7 +6,17 @@ import java.util.*;
 
 import static jooqpreprocessor.util.StringParsing.findNextSeparator;
 
+/**
+ * Rewrites a MySQL {@code CREATE TABLE} statement so jOOQ can parse it, by dropping the
+ * keys and constraints and the column options jOOQ rejects.
+ */
 public final class MyCreateTable implements StatementParser {
+
+    /**
+     * Creates the parser.
+     */
+    public MyCreateTable() {
+    }
 
     @Override
     public boolean matches(final String statement) {
@@ -50,6 +60,13 @@ public final class MyCreateTable implements StatementParser {
         return createStatement.substring(startIndex+1, endIndex);
     }
 
+    /**
+     * Splits a comma-separated clause list into its trimmed clauses, skipping commas that
+     * are nested inside brackets, backticks or quotes.
+     *
+     * @param clauses the clause list to split
+     * @return the individual clauses, in their original order
+     */
     public static List<String> toClausesList(final String clauses) {
         final List<String> ret = new ArrayList<>();
 
